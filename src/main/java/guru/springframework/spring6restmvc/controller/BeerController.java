@@ -26,6 +26,17 @@ public class BeerController {
     //normally i have to create a const for this but i am using @AllArgsConstructor
     private final BeerService beerService;
 
+    //it will search for by Id and update it
+    @PutMapping("{beerId}")
+    public ResponseEntity updateById(@PathVariable("beerId") UUID beerId, @RequestBody Beer beer){
+
+        beerService.updateByBeerId(beerId, beer);
+
+        //NO-CONTENT 204 status
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+
+    }
+
     //RequestBody BIND THE JSON BODY BEER OBJECT
     @PostMapping
     //@RequestMapping(method = RequestMethod.POST)
