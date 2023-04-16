@@ -4,11 +4,10 @@ import guru.springframework.spring6restmvc.model.Beer;
 import guru.springframework.spring6restmvc.services.BeerService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -25,6 +24,17 @@ public class BeerController {
 
     //normally i have to create a const for this but i am using @AllArgsConstructor
     private final BeerService beerService;
+
+    //RequestBody BIND THE JSON BODY BEER OBJECT
+    @PostMapping
+    //@RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity handlePost(@RequestBody  Beer beer){
+
+        Beer savedBeer = beerService.saveNewBeer(beer);
+
+        //IT RETURNS 201 STATUS
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
 
     //first you have to run Spring6RestMvcApplication and after that in postman "http://localhost:8080/api/v1/beer" you will see your data
     //requestmapping will convert it json format
