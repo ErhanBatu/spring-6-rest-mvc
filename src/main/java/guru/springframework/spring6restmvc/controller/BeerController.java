@@ -4,6 +4,7 @@ import guru.springframework.spring6restmvc.model.Beer;
 import guru.springframework.spring6restmvc.services.BeerService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -32,8 +33,12 @@ public class BeerController {
 
         Beer savedBeer = beerService.saveNewBeer(beer);
 
+        //I will have a location value in header, you can see it in postman
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Location","/api/v1/beer/" + savedBeer.getId().toString());
+
         //IT RETURNS 201 STATUS
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity(headers, HttpStatus.CREATED);
     }
 
     //first you have to run Spring6RestMvcApplication and after that in postman "http://localhost:8080/api/v1/beer" you will see your data
