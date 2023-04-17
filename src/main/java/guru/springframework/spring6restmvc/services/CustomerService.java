@@ -16,4 +16,6 @@ public interface CustomerService {
     void updatedById(UUID id, Customer customer);
 
     void deleteById(UUID id);
+
+    void patchBeerById(UUID id, Customer customer);
 }
