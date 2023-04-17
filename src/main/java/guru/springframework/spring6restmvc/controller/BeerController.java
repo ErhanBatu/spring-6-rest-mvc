@@ -3,6 +3,7 @@ package guru.springframework.spring6restmvc.controller;
 import guru.springframework.spring6restmvc.model.Beer;
 import guru.springframework.spring6restmvc.services.BeerService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ import java.util.UUID;
 //rest controller will get the result from api
 
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RestController
 //this is my base mapping
 @RequestMapping("/api/v1/beer")
