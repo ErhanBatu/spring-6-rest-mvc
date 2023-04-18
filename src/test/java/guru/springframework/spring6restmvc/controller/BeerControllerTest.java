@@ -1,5 +1,7 @@
 package guru.springframework.spring6restmvc.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import guru.springframework.spring6restmvc.model.Beer;
 import guru.springframework.spring6restmvc.services.BeerService;
 import guru.springframework.spring6restmvc.services.BeerServiceImpl;
@@ -33,6 +35,10 @@ class BeerControllerTest {
     @Autowired
     MockMvc mockMvc;
 
+    //
+    @Autowired
+    ObjectMapper objectMapper;
+
     //provide mock it into the spring content, if you don't put it it will give error
     //mockito will create a mock instance and autowired into the beer controller
     @MockBean
@@ -49,6 +55,22 @@ class BeerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.length()", is(3)));
+    }
+
+    //I convert into JSON
+    @Test
+    void testCreateNewBeer() throws JsonProcessingException {
+        //For convertion you have to use Objectmapper from jakson
+        //Above i used autowired and spring will do auto config, I don't need to add this line and also line below
+        //Because I used autowired and spring will do auto config and convert the date format
+//        ObjectMapper objectMapper = new ObjectMapper();
+        //this is for date format otherwise it will give error
+//        objectMapper.findAndRegisterModules();
+
+        Beer beer = beerServiceImpl.listBeers().get(0);
+
+        //it produce JSON here
+        System.out.println(objectMapper.writeValueAsString(beer));
     }
 
     @Test
