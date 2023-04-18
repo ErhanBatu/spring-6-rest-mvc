@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import guru.springframework.spring6restmvc.model.Beer;
 import guru.springframework.spring6restmvc.services.BeerService;
 import guru.springframework.spring6restmvc.services.BeerServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -21,6 +22,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 //@SpringBootTest
@@ -44,7 +46,13 @@ class BeerControllerTest {
     @MockBean
     BeerService beerService;
 
-    BeerServiceImpl beerServiceImpl = new BeerServiceImpl();
+    BeerServiceImpl beerServiceImpl;
+
+    @BeforeEach
+    void setUp(){
+        //it's gonna create new beerserviceimpl for each test
+        beerServiceImpl = new BeerServiceImpl();
+    }
 
     @Test
     void testListBeers() throws Exception {
@@ -59,7 +67,7 @@ class BeerControllerTest {
 
     //I convert into JSON
     @Test
-    void testCreateNewBeer() throws JsonProcessingException {
+    void testCreateNewBeer() throws Exception {
         //For convertion you have to use Objectmapper from jakson
         //Above i used autowired and spring will do auto config, I don't need to add this line and also line below
         //Because I used autowired and spring will do auto config and convert the date format
@@ -68,9 +76,22 @@ class BeerControllerTest {
 //        objectMapper.findAndRegisterModules();
 
         Beer beer = beerServiceImpl.listBeers().get(0);
+        beer.setVersion(null);
+        beer.setId(null);
+
+        //it will return first beer
+        given(beerService.saveNewBeer(any(Beer.class))).willReturn(beerServiceImpl.listBeers().get(1));
+
+        mockMvc.perform(post("/api/v1/beer")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                //here I inject JSON format here
+                        .content(objectMapper.writeValueAsString(beer)))
+                .andExpect(status().isCreated())
+                .andExpect(header().exists("Location"));
 
         //it produce JSON here
-        System.out.println(objectMapper.writeValueAsString(beer));
+//        System.out.println(objectMapper.writeValueAsString(beer));
     }
 
     @Test
