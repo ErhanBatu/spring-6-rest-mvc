@@ -21,13 +21,18 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RestController
 //this is my base mapping
-@RequestMapping("/api/v1/beer")
+//you don't need to use it because i defined below public static final
+//@RequestMapping("/api/v1/beer")
 public class BeerController {
+
+    //I define the path and make them static I can reach anywhere
+    public static final String BEER_PATH = "/api/v1/beer";
+    public static final String BEER_PATH_ID = BEER_PATH + "/{beerId}";
 
     //normally i have to create a const for this but i am using @AllArgsConstructor
     private final BeerService beerService;
 
-    @PatchMapping("{beerId}")
+    @PatchMapping(BEER_PATH_ID)
     public ResponseEntity updateBeerPatchById(@PathVariable("beerId") UUID beerId, @RequestBody Beer beer){
 
         beerService.patchBeerById(beerId, beer);
@@ -36,7 +41,7 @@ public class BeerController {
 
     }
 
-    @DeleteMapping("{beerId}")
+    @DeleteMapping(BEER_PATH_ID)
     public ResponseEntity deleteBuId(@PathVariable("beerId") UUID beerId){
 
         beerService.deleteById(beerId);
@@ -45,7 +50,7 @@ public class BeerController {
     }
 
     //it will search for by Id and update it
-    @PutMapping("{beerId}")
+    @PutMapping(BEER_PATH_ID)
     public ResponseEntity updateById(@PathVariable("beerId") UUID beerId, @RequestBody Beer beer){
 
         beerService.updateByBeerId(beerId, beer);
@@ -56,7 +61,7 @@ public class BeerController {
     }
 
     //RequestBody BIND THE JSON BODY BEER OBJECT
-    @PostMapping
+    @PostMapping(BEER_PATH)
     //@RequestMapping(method = RequestMethod.POST)
     public ResponseEntity handlePost(@RequestBody  Beer beer){
 
@@ -64,7 +69,7 @@ public class BeerController {
 
         //I will have a location value in header, you can see it in postman
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Location","/api/v1/beer/" + savedBeer.getId().toString());
+        headers.add("Location",BEER_PATH + savedBeer.getId().toString());
 
         //IT RETURNS 201 STATUS
         return new ResponseEntity(headers, HttpStatus.CREATED);
@@ -73,7 +78,7 @@ public class BeerController {
     //first you have to run Spring6RestMvcApplication and after that in postman "http://localhost:8080/api/v1/beer" you will see your data
     //requestmapping will convert it json format
     //I am getting requestmapping from above
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping(value = BEER_PATH)
     public List<Beer> listBeers(){
         return beerService.listBeers();
     }
@@ -81,7 +86,7 @@ public class BeerController {
     //this is my get url
     //@PathVariable explicitly say my beerId in requestMapping and beerId in getBeerById they are the same
     //method = RequestMethod.GET I am saying this is gonna be only get not post
-    @RequestMapping(value = "/{beerId}", method = RequestMethod.GET)
+    @RequestMapping(value = BEER_PATH_ID, method = RequestMethod.GET)
     public Beer getBeerById(@PathVariable("beerId") UUID beerId){
 
         log.debug("Get Beer Id - in controller -1234 abc");
