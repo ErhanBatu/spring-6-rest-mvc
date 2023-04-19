@@ -68,7 +68,8 @@ class BeerControllerTest {
     @Test
     void getBeerByIdNotFound() throws Exception {
 
-        //it will throw an error
+        //it will throw an error but i have a handleNotFoundException method inside the beer controller
+        //so it will be green
         given(beerService.getBeerById(any(UUID.class))).willThrow(NotFoundException.class);
 
         mockMvc.perform(get(BeerController.BEER_PATH_ID,UUID.randomUUID()))

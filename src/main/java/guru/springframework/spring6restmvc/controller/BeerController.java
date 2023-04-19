@@ -83,6 +83,15 @@ public class BeerController {
         return beerService.listBeers();
     }
 
+    //it will be handled by this method if anything throw a not found exception inside this class
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity handleNotFoundException(){
+
+        System.out.println("in exception handler");
+
+        return ResponseEntity.notFound().build();
+    }
+
     //this is my get url
     //@PathVariable explicitly say my beerId in requestMapping and beerId in getBeerById they are the same
     //method = RequestMethod.GET I am saying this is gonna be only get not post
