@@ -57,6 +57,15 @@ class CustomerControllerTest {
         customerServiceImpl = new CustomerServiceImpl();
     }
 
+    //it will get exception handling from Exception Controller class
+    @Test
+    void getCustomerByIdNotFound() throws Exception {
+        given(customerService.getCustomerById(any(UUID.class))).willThrow(NotFoundException.class);
+
+        mockMvc.perform(get("/api/v2/customer/" + UUID.randomUUID()))
+                .andExpect(status().isNotFound());
+    }
+
     @Test
     void testPatchCustomer() throws Exception {
 

@@ -84,13 +84,14 @@ public class BeerController {
     }
 
     //it will be handled by this method if anything throw a not found exception inside this class
-    @ExceptionHandler(NotFoundException.class)
-    public ResponseEntity handleNotFoundException(){
-
-        System.out.println("in exception handler");
-
-        return ResponseEntity.notFound().build();
-    }
+    //I will make it globall and carry it to the exceptioncontroller class look at there
+//    @ExceptionHandler(NotFoundException.class)
+//    public ResponseEntity handleNotFoundException(){
+//
+//        System.out.println("in exception handler");
+//
+//        return ResponseEntity.notFound().build();
+//    }
 
     //this is my get url
     //@PathVariable explicitly say my beerId in requestMapping and beerId in getBeerById they are the same
