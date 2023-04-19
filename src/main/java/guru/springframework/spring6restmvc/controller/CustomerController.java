@@ -1,8 +1,7 @@
 package guru.springframework.spring6restmvc.controller;
 
-import guru.springframework.spring6restmvc.model.Customer;
+import guru.springframework.spring6restmvc.model.CustomerDTO;
 import guru.springframework.spring6restmvc.services.CustomerService;
-import guru.springframework.spring6restmvc.services.CustomerServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,7 +19,7 @@ public class CustomerController {
     private final CustomerService customerService;
 
     @PatchMapping("{customerId}")
-    public ResponseEntity updateBeerPatchById(@PathVariable("customerId") UUID id, @RequestBody Customer customer){
+    public ResponseEntity updateBeerPatchById(@PathVariable("customerId") UUID id, @RequestBody CustomerDTO customer){
 
         customerService.patchBeerById(id, customer);
 
@@ -36,7 +35,7 @@ public class CustomerController {
     }
 
     @PutMapping("{customerId}")
-    public ResponseEntity updateById(@PathVariable("customerId") UUID id, @RequestBody Customer customer){
+    public ResponseEntity updateById(@PathVariable("customerId") UUID id, @RequestBody CustomerDTO customer){
 
         customerService.updatedById(id, customer);
 
@@ -45,9 +44,9 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity handlePost(@RequestBody Customer customer){
+    public ResponseEntity handlePost(@RequestBody CustomerDTO customer){
 
-        Customer savedCustomer = customerService.saveNewCustomer(customer);
+        CustomerDTO savedCustomer = customerService.saveNewCustomer(customer);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/api/v2/customer/" +savedCustomer.getId().toString());
@@ -57,13 +56,13 @@ public class CustomerController {
 
     //if you use method = RequestMethod.GET, you can use this method only for get
     @RequestMapping(method = RequestMethod.GET)
-    public List<Customer> listAllCustomers(){
+    public List<CustomerDTO> listAllCustomers(){
         return customerService.getAllCustomers();
     }
 
     //id will be customerId because I use PathVariable
     @RequestMapping(value = "/{customerId}", method = RequestMethod.GET)
-    public Customer getCustomerById(@PathVariable("customerId") UUID id){
+    public CustomerDTO getCustomerById(@PathVariable("customerId") UUID id){
         return customerService.getCustomerById(id);
     }
 

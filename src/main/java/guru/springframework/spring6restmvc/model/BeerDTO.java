@@ -11,7 +11,7 @@ import java.util.UUID;
 //builder will give you in the implementation of the service Beer.builder().build();
 @Builder
 @Data
-public class Beer {
+public class BeerDTO {
     private UUID id;
     private Integer version;
     private String beerName;
