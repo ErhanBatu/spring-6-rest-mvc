@@ -101,7 +101,8 @@ public class BeerController {
 
         log.debug("Get Beer Id - in controller -1234 abc");
 
-        return beerService.getBeerById(beerId);
+        //I made it optinal in the service so that i can define here
+        return beerService.getBeerById(beerId).orElseThrow(NotFoundException::new);
     }
 
 }
