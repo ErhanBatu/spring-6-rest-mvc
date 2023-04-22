@@ -63,7 +63,7 @@ public class CustomerController {
     //id will be customerId because I use PathVariable
     @RequestMapping(value = "/{customerId}", method = RequestMethod.GET)
     public CustomerDTO getCustomerById(@PathVariable("customerId") UUID id){
-        return customerService.getCustomerById(id);
+        return customerService.getCustomerById(id).orElseThrow(NotFoundException::new);
     }
 
 

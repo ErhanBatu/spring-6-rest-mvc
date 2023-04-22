@@ -37,8 +37,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerDTO getCustomerById(UUID uuid) {
-        return customerMap.get(uuid);
+    public Optional<CustomerDTO> getCustomerById(UUID uuid) {
+        return Optional.of(customerMap.get(uuid));
     }
 
     @Override
@@ -66,21 +66,11 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void updatedById(UUID id, CustomerDTO customer) {
 
-        CustomerDTO updatedCustomer = customerMap.get(id);
-        updatedCustomer.setName(customer.getName());
-        updatedCustomer.setVersion(customer.getVersion());
-        updatedCustomer.setCreatedDate(LocalDateTime.now());
-        updatedCustomer.setUpdateDate(LocalDateTime.now());
-
-        //You don't have to use this below, just in case
-//        customerMap.put(updatedCustomer.getId(), updatedCustomer);
-
     }
 
     @Override
     public void deleteById(UUID id) {
 
-        customerMap.remove(id);
     }
 
     @Override
