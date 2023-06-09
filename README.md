@@ -54,3 +54,6 @@ Got a question about your Spring Framework 6 course? [Checkout these FAQs!](http
 * Like Spring Framework Guru on [Facebook](https://www.facebook.com/springframeworkguru/)
 * Follow Spring Framework Guru on [Twitter](https://twitter.com/spring_guru)
 * Connect with John Thompson on [LinkedIn](http://www.linkedin.com/in/springguru)
+
+## MY NOTES
+* In Intellij go to Tools -> HTTP Client -> Create Request In Http Client. Then you don't have to use postman

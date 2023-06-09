@@ -14,7 +14,7 @@ import java.util.UUID;
 //To use Slf4j you put this in application.properties: logging.level.guru.springframework=debug
 @Slf4j
 @AllArgsConstructor
-//Restcontroller retuns you response body as json
+//Restcontroller retuns you response body as json, this is gonna convert to JSON
 @RestController
 public class BeerController {
 
