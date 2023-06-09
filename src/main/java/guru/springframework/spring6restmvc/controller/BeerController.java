@@ -19,28 +19,31 @@ import java.util.UUID;
 @RequiredArgsConstructor
 //Restcontroller retuns you response body as json, this is gonna convert to JSON
 @RestController
-@RequestMapping("/api/v1/beer")
 public class BeerController {
+
+    public static final String BEER_PATH = "/api/v1/beer";
+
+    public static final String BEER_PATH_ID = BEER_PATH + "/{beerId}";
 
     //Normally I have to create an const for that but I use AllArgsConst
     private final BeerService beerService;
 
     //POST
-    @PostMapping
+    @PostMapping(BEER_PATH)
     //RequestBody it is gonna bind the JSON with the beer object
     public ResponseEntity handlePost(@RequestBody Beer beer){
 
         Beer savedBeer = beerService.saveNewBeer(beer);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Location", "/api/v1/beer/" + savedBeer.getId().toString());
+        headers.add("Location", BEER_PATH + "/" + savedBeer.getId().toString());
 
         //we create headers and adding response entity, you have to put headres here otherwise you cannot see location
         return new ResponseEntity(headers, HttpStatus.CREATED);
     }
 
     //GET
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping(BEER_PATH)
     public List<Beer> listBeers(){
 
         return beerService.listBeers();
@@ -48,7 +51,7 @@ public class BeerController {
     }
 
     //GET
-    @RequestMapping(value = "{beerId}", method = RequestMethod.GET)
+    @GetMapping(BEER_PATH_ID)
     public Beer getBeerById(@PathVariable("beerId") UUID beerId){
 
         log.debug("Get Beer by id in controller, thanks to Slf4j I can write this log");
