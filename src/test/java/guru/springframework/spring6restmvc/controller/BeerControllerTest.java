@@ -1,5 +1,7 @@
 package guru.springframework.spring6restmvc.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import guru.springframework.spring6restmvc.model.Beer;
 import guru.springframework.spring6restmvc.services.BeerService;
 import guru.springframework.spring6restmvc.services.BeerServiceImpl;
@@ -33,11 +35,28 @@ class BeerControllerTest {
     @Autowired
     MockMvc mockMvc;
 
+    //You have to autowired objectmapper for json to java and java to json
+    @Autowired
+    ObjectMapper mapper;
+
     //You don't have to create autowired because mockbean will already do that and also you can use mockito properties
     @MockBean
     BeerService beerService;
 
     BeerServiceImpl beerServiceImpl = new BeerServiceImpl();
+
+    @Test
+    void testCreateNewBeer() throws JsonProcessingException {
+        //I will create a JSON by using Jakson
+//        ObjectMapper mapper = new ObjectMapper();
+//        mapper.findAndRegisterModules();
+
+        Beer beer = beerServiceImpl.listBeers().get(0);
+
+        System.out.println(mapper.writeValueAsString(beer));
+
+
+    }
 
     @Test
     void testListBeers() throws Exception {
