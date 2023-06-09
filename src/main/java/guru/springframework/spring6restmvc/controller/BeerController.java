@@ -3,6 +3,7 @@ package guru.springframework.spring6restmvc.controller;
 import guru.springframework.spring6restmvc.model.Beer;
 import guru.springframework.spring6restmvc.services.BeerService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,7 @@ import java.util.UUID;
 
 //To use Slf4j you put this in application.properties: logging.level.guru.springframework=debug
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 //Restcontroller retuns you response body as json, this is gonna convert to JSON
 @RestController
 @RequestMapping("/api/v1/beer")
