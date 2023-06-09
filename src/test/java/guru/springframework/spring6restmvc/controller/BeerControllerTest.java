@@ -94,8 +94,8 @@ class BeerControllerTest {
 
         //mockito here will return testbeer
         given(beerService.getBeerById(testBeer.getId())).willReturn(testBeer);
-
-        mockMvc.perform(get(BeerController.BEER_PATH + "/" + testBeer.getId())
+// you can also use like this         mockMvc.perform(get(BeerController.BEER_PATH + "/" + testBeer.getId())
+        mockMvc.perform(get(BeerController.BEER_PATH_ID, testBeer.getId())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
