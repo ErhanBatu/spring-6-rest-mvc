@@ -7,11 +7,12 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-//data returns getter setter const hashcode tostring all
-//builder will give you in the implementation of the service Beer.builder().build();
-@Builder
+
 @Data
-public class BeerDTO {
+//@Getter @Setter @RequiredArgsConstructor @ToString @EqualsAndHashCode.
+@Builder
+public class Beer {
+
     private UUID id;
     private Integer version;
     private String beerName;
@@ -20,5 +21,8 @@ public class BeerDTO {
     private Integer quantityOnHand;
     private BigDecimal price;
     private LocalDateTime createdDate;
-    private LocalDateTime updateDate;
+    private LocalDateTime updatedDate;
+
+
+
 }
