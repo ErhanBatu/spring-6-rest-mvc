@@ -36,13 +36,12 @@ import java.util.UUID;
 public class BeerOrder {
 
     public BeerOrder(UUID id, Long version, Timestamp createdDate, Timestamp lastModifiedDate, String customerRef,
-                     Customer customer, Set<BeerOrderLine> beerOrderLines, BeerOrderShipment beerOrderShipment) {
+                     Set<BeerOrderLine> beerOrderLines, BeerOrderShipment beerOrderShipment) {
         this.id = id;
         this.version = version;
         this.createdDate = createdDate;
         this.lastModifiedDate = lastModifiedDate;
         this.customerRef = customerRef;
-        this.setCustomer(customer);
         this.beerOrderLines = beerOrderLines;
         this.setBeerOrderShipment(beerOrderShipment);
     }
@@ -72,14 +71,6 @@ public class BeerOrder {
     }
 
     private String customerRef;
-
-    @ManyToOne
-    private Customer customer;
-
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-        customer.getBeerOrders().add(this);
-    }
 
     public void setBeerOrderShipment(BeerOrderShipment beerOrderShipment) {
         this.beerOrderShipment = beerOrderShipment;

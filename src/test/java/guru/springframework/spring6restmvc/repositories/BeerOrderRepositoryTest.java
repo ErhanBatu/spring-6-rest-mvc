@@ -17,17 +17,13 @@ class BeerOrderRepositoryTest {
     BeerOrderRepository beerOrderRepository;
 
     @Autowired
-    CustomerRepository customerRepository;
-
-    @Autowired
     BeerRepository beerRepository;
 
-    Customer testCustomer;
     Beer testBeer;
 
     @BeforeEach
     void setUp() {
-        testCustomer = customerRepository.findAll().get(0);
+
         testBeer = beerRepository.findAll().get(0);
     }
 
@@ -36,7 +32,6 @@ class BeerOrderRepositoryTest {
     void testBeerOrders() {
         BeerOrder beerOrder = BeerOrder.builder()
                 .customerRef("Test order")
-                .customer(testCustomer)
                 .beerOrderShipment(BeerOrderShipment.builder()
                         .trackingNumber("1235r")
                         .build())

@@ -20,16 +20,13 @@ class BootstrapDataTest {
     BeerRepository beerRepository;
 
     @Autowired
-    CustomerRepository customerRepository;
-
-    @Autowired
     BeerCsvService csvService;
 
     BootstrapData bootstrapData;
 
     @BeforeEach
     void setUp() {
-        bootstrapData = new BootstrapData(beerRepository, customerRepository, csvService);
+        bootstrapData = new BootstrapData(beerRepository, csvService);
     }
 
     @Test
@@ -37,7 +34,6 @@ class BootstrapDataTest {
         bootstrapData.run(null);
 
         assertThat(beerRepository.count()).isEqualTo(2413);
-        assertThat(customerRepository.count()).isEqualTo(3);
     }
 }
 
