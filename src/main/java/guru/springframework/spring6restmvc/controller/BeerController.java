@@ -1,62 +1,87 @@
 package guru.springframework.spring6restmvc.controller;
 
-import guru.springframework.spring6restmvc.model.Beer;
+import guru.springframework.spring6restmvc.model.BeerDTO;
+import guru.springframework.spring6restmvc.model.BeerStyle;
 import guru.springframework.spring6restmvc.services.BeerService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
-//To use Slf4j you put this in application.properties: logging.level.guru.springframework=debug
+/**
+ * Created by jt, Spring Framework Guru.
+ */
 @Slf4j
 @RequiredArgsConstructor
-//Restcontroller retuns you response body as json, this is gonna convert to JSON
 @RestController
 public class BeerController {
 
     public static final String BEER_PATH = "/api/v1/beer";
-
     public static final String BEER_PATH_ID = BEER_PATH + "/{beerId}";
 
-    //Normally I have to create an const for that but I use AllArgsConst
     private final BeerService beerService;
 
-    //POST
-    @PostMapping(BEER_PATH)
-    //RequestBody it is gonna bind the JSON with the beer object
-    public ResponseEntity handlePost(@RequestBody Beer beer){
+    @PatchMapping(BEER_PATH_ID)
+    public ResponseEntity updateBeerPatchById(@PathVariable("beerId")UUID beerId, @RequestBody BeerDTO beer){
 
-        Beer savedBeer = beerService.saveNewBeer(beer);
+        beerService.patchBeerById(beerId, beer);
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping(BEER_PATH_ID)
+    public ResponseEntity deleteById(@PathVariable("beerId") UUID beerId){
+
+        if(! beerService.deleteById(beerId)){
+            throw new NotFoundException();
+        }
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping(BEER_PATH_ID)
+    public ResponseEntity updateById(@PathVariable("beerId")UUID beerId, @Validated @RequestBody BeerDTO beer){
+
+        if( beerService.updateBeerById(beerId, beer).isEmpty()){
+            throw new NotFoundException();
+        }
+
+        return new ResponseEntity(HttpStatus.NO_CONTENT);
+    }
+
+    @PostMapping(BEER_PATH)
+    public ResponseEntity handlePost(@Validated @RequestBody BeerDTO beer){
+
+        BeerDTO savedBeer = beerService.saveNewBeer(beer);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", BEER_PATH + "/" + savedBeer.getId().toString());
 
-        //we create headers and adding response entity, you have to put headres here otherwise you cannot see location
         return new ResponseEntity(headers, HttpStatus.CREATED);
     }
 
-    //GET
-    @GetMapping(BEER_PATH)
-    public List<Beer> listBeers(){
-
-        return beerService.listBeers();
-
+    @GetMapping(value = BEER_PATH)
+    public Page<BeerDTO> listBeers(@RequestParam(required = false) String beerName,
+                                   @RequestParam(required = false) BeerStyle beerStyle,
+                                   @RequestParam(required = false) Boolean showInventory,
+                                   @RequestParam(required = false) Integer pageNumber,
+                                   @RequestParam(required = false) Integer pageSize){
+        return beerService.listBeers(beerName, beerStyle, showInventory, pageNumber, pageSize);
     }
 
-    //GET
-    @GetMapping(BEER_PATH_ID)
-    public Beer getBeerById(@PathVariable("beerId") UUID beerId){
 
-        log.debug("Get Beer by id in controller, thanks to Slf4j I can write this log");
+    @GetMapping(value = BEER_PATH_ID)
+    public BeerDTO getBeerById(@PathVariable("beerId") UUID beerId){
 
-        return beerService.getBeerById(beerId);
+        log.debug("Get Beer by Id - in controller");
+
+        return beerService.getBeerById(beerId).orElseThrow(NotFoundException::new);
     }
 
 }

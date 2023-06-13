@@ -54,15 +54,3 @@ Got a question about your Spring Framework 6 course? [Checkout these FAQs!](http
 * Like Spring Framework Guru on [Facebook](https://www.facebook.com/springframeworkguru/)
 * Follow Spring Framework Guru on [Twitter](https://twitter.com/spring_guru)
 * Connect with John Thompson on [LinkedIn](http://www.linkedin.com/in/springguru)
-
-## MY NOTES
-* In Intellij go to Tools -> HTTP Client -> Create Request In Http Client. Then you don't have to use postman
-* This how you can automatically trigger Spring when you make changes:
-First inject this dependency in your POM XML:
-  <dependency>
-  <groupId>org.springframework.boot</groupId>
-  <artifactId>spring-boot-devtools</artifactId>
-  </dependency>
-
-After that in Ultimate Intellij go to Edit Configurations->Spring6RestMvcApplication(in the Spring Boot) -> Modify options -> On 'Update' action -> Update classes and resources
-after this step go back to again Modify options -> On frame deactivation -> Update classes and resources
